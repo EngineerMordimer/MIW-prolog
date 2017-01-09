@@ -1,6 +1,9 @@
 % Autor: Maciej Chmieliński
 %   Indeks: s12103 
 
+% dynamic variables
+:- dynamic my_pos/1.
+
 help_me :- 
 	nl,
 	write('Commands that you can use:'),nl,
@@ -36,9 +39,13 @@ path(hall_2,bedroom,w).
 path(hall_2,study,e).
 path(hall_2,attic,up).
 
-:- dynamic my_pos/1.
-assert(my_pos(garden)).
+%assert(my_pos(garden)).
 go(X) :- my_pos(Z), path(Z,Y,X), retractall(my_pos(Z)), assert(my_pos(Y)).
 % The rules how you can travel
-start :- write('You just start the game:').
-where_are :- write('I am in '), my_pos(X), write(X).
+start :- write('You just start the game:'), 
+	assert(my_pos(garden)).
+where_are :- write('I am in '), my_pos(Pos), write(Pos),nl,
+	write('I can go: ')
+	,path(Pos,Rooms,up),write(Rooms),write(' in direction '), write(up),nl
+	.
+
